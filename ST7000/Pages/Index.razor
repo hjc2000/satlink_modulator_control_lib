@@ -1,0 +1,10 @@
+﻿@page "/"
+
+<div class="display-box">
+	@foreach (string str in StringList)
+	{
+		<div>@str</div>
+	}
+</div>
+<button @onclick="OnClick">点击发送请求</button>
+<div>@DisplayText</div>

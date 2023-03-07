@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "配网网页", "配网网页\配网网页.csproj", "{9F09E95F-D286-4E00-8AE4-EE7A05F03B9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "配网网页", "配网网页\配网网页.csproj", "{9F09E95F-D286-4E00-8AE4-EE7A05F03B9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "测试用服务器", "测试用服务器\测试用服务器.csproj", "{193114D3-3D31-486B-B074-7CD0007C22BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "测试用服务器", "测试用服务器\测试用服务器.csproj", "{193114D3-3D31-486B-B074-7CD0007C22BB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{F4151DEF-EB06-4C30-931C-E9E9487D84D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ST7000", "ST7000\ST7000.csproj", "{B2D3D475-5E80-42FA-B372-347543E8B611}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModulatorLib", "ModulatorLib\ModulatorLib.csproj", "{C845BB72-622A-46E3-AF35-452A994D2F08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,20 @@ Global
 		{193114D3-3D31-486B-B074-7CD0007C22BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{193114D3-3D31-486B-B074-7CD0007C22BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{193114D3-3D31-486B-B074-7CD0007C22BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4151DEF-EB06-4C30-931C-E9E9487D84D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4151DEF-EB06-4C30-931C-E9E9487D84D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4151DEF-EB06-4C30-931C-E9E9487D84D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4151DEF-EB06-4C30-931C-E9E9487D84D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D3D475-5E80-42FA-B372-347543E8B611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D3D475-5E80-42FA-B372-347543E8B611}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D3D475-5E80-42FA-B372-347543E8B611}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B2D3D475-5E80-42FA-B372-347543E8B611}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D3D475-5E80-42FA-B372-347543E8B611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D3D475-5E80-42FA-B372-347543E8B611}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C845BB72-622A-46E3-AF35-452A994D2F08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C845BB72-622A-46E3-AF35-452A994D2F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C845BB72-622A-46E3-AF35-452A994D2F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C845BB72-622A-46E3-AF35-452A994D2F08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

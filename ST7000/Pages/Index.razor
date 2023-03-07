@@ -1,0 +1,7 @@
+﻿@page "/"
+
+@foreach (string str in StringList)
+{
+	<div>@str</div>
+}
+<button @onclick="OnClick">点击发送请求</button>

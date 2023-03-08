@@ -13,9 +13,9 @@ namespace ModulatorLib
 	/// <summary>
 	/// ST7000内置数据库
 	/// </summary>
-	public class ST7000Lib
+	public class ST7000Lib : IModulatorOperator
 	{
-		public static Dictionary<int, int> ChFreMap = new Dictionary<int, int>()
+		public Dictionary<int, int> ChannelDictionary { get; set; } = new Dictionary<int, int>()
 				{
 					{ 2, 57 },
 					{ 3 , 63 },
@@ -175,13 +175,14 @@ namespace ModulatorLib
 					{ 157 , 993 },
 					{ 158 , 999 },
 			};
+		public string IPAddress { get; set; } = "192.168.1.15";
 
 		/// <summary>
 		/// 向 ST7000 发送请求，获取信道和频率
 		/// </summary>
 		/// <param name="ip_address"></param>
 		/// <returns></returns>
-		public static async Task<(bool avaliable, int chanel, int frequency)> Get_Chanel_And_Fre_From_ST7000(string ip_address)
+		public static async Task<(bool avaliable, int chanel, int frequency)> Get_Chanel_And_Fre_From_ST7000(string ip_address = "192.168.1.15")
 		{
 			// 发送 HTTP 请求，获取设备信息
 			HttpClient client = new HttpClient();
@@ -199,12 +200,14 @@ namespace ModulatorLib
 			return (false, 0, 0);
 		}
 
+		#region 内部函数
+
+		#endregion
+
 		/// <summary>
-		/// 从 HTML 字符串中获取信道和频率
+		/// 从html字符串中获取频率
 		/// </summary>
-		/// <param name="html"></param>
-		/// <param name="chanel"></param>
-		/// <param name="fre"></param>
+		/// <param name="html">内容为html的字符串</param>
 		/// <returns></returns>
 		public static (bool avaliable, int chanel, int frequency) Get_Chanel_And_Fre_From_Html(string html)
 		{
@@ -212,17 +215,17 @@ namespace ModulatorLib
 			HtmlDocument doc = new HtmlDocument();
 			doc.LoadHtml(html);
 			// 选出 select 标签
-			HtmlNodeCollection nodes_select = doc.DocumentNode.SelectNodes("//select");
+			HtmlNodeCollection select_nodes = doc.DocumentNode.SelectNodes("//select");
 			// 遍历每一个 select 标签节点
-			foreach (HtmlNode node_select in nodes_select)
+			foreach (HtmlNode select_node in select_nodes)
 			{
 				// 如果 name 属性存在且为 channel
-				if (node_select?.Attributes["name"]?.Value == "channel")
+				if (select_node?.Attributes["name"]?.Value == "channel")
 				{
 					// 获取 select 标签的子标签 option 标签
-					var nodes_option = node_select.ChildNodes;
+					HtmlNodeCollection option_nodes = select_node.ChildNodes;
 					// 遍历每一个 option 标签
-					foreach (var node_option in nodes_option)
+					foreach (HtmlNode? node_option in option_nodes)
 					{
 						// 如果标签存在 selected 属性
 						if (!(node_option.Attributes["selected"] == null))
@@ -242,6 +245,16 @@ namespace ModulatorLib
 				}
 			}
 			return (false, 0, 0);
+		}
+
+		public Task<(bool success, int channel, int frequency)> SetCurrentChannelAsync(int channel)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<(bool success, int channel, int frequency)> GetCurrentChannelAsync()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

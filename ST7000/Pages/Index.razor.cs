@@ -1,31 +1,49 @@
-﻿using HtmlAgilityPack;
-using ModulatorLib;
-using System.Net;
+﻿using ModulatorLib;
 
 namespace ST7000.Pages
 {
 	public partial class Index
 	{
-		private string DisplayText = string.Empty;
-		private List<string> StringList = new List<string>() { string.Empty };
-		private string _sys_info_url = "http://localhost:8051/SATLINK_Modulator_files/SystemInfo.html";
+		double _fre_display = 0;
+		int _chanel_display = 0;
+		//private string _sys_info_url = "http://localhost:8051/SATLINK_Modulator_files/SystemInfo.html";
 
-		#region 事件处理函数
-		private async Task OnClick()
+		#region 生命周期函数
+		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
-			HttpClient client = new HttpClient();
-			HttpResponseMessage response = await client.GetAsync(_sys_info_url);
-			if (response.StatusCode == HttpStatusCode.OK)
+			if (firstRender)
 			{
-				int chanel_out;
-				double fre_out;
-				string html_str = await response.Content.ReadAsStringAsync();
-				if (ST7000Lib.GetChanel_And_Fre_FromHtml(html_str, out chanel_out, out fre_out))
-				{
-					DisplayText = $"信道：{chanel_out}，频率：{fre_out}";
-				}
+				await FlushData();
 			}
 		}
+		#endregion
+
+		/// <summary>
+		/// 从 ST7000 那重新获取设备信息
+		/// </summary>
+		/// <returns></returns>
+		public async Task FlushData()
+		{
+			ST7000Lib.ChFre ch_fre = await ST7000Lib.Get_Chanel_And_Fre_From_ST7000("192.168.1.15");
+			if (ch_fre.Avaliable)
+			{
+				_chanel_display = ch_fre.Chanel;
+				_fre_display = ch_fre.Fre;
+			}
+			StateHasChanged();
+		}
+
+		#region 事件处理函数
+		private async Task SetToLastFre()
+		{
+
+		}
+
+		async Task SetToNextFre()
+		{
+
+		}
+
 		#endregion
 	}
 }

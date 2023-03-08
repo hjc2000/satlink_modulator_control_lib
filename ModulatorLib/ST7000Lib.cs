@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using System.Net;
 /** 命名规范
 * 1. 类型名使用大驼峰命名法，不使用下划线分隔。
 * 2. 字段以下划线 _ 开头，使用下划线分隔每个单词。
@@ -175,7 +176,47 @@ namespace ModulatorLib
 					{ 158 , 999.0 },
 			};
 
-		public static bool GetChanel_And_Fre_FromHtml(string html, out int chanel, out double fre)
+		public struct ChFre
+		{
+			public bool Avaliable;
+			public int Chanel;
+			public double Fre;
+		}
+
+		/// <summary>
+		/// 向 ST7000 发送请求，获取信道和频率
+		/// </summary>
+		/// <param name="ip_address"></param>
+		/// <returns></returns>
+		public static async Task<ChFre> Get_Chanel_And_Fre_From_ST7000(string ip_address)
+		{
+			ChFre ch_fre = new ChFre();
+			ch_fre.Avaliable = false;
+			// 发送 HTTP 请求，获取设备信息
+			HttpClient client = new HttpClient();
+			string st7000_url = $"http://{ip_address}/RFSetup_ATSC_C.htm";
+			HttpResponseMessage response = await client.GetAsync(st7000_url);
+			if (response.StatusCode == HttpStatusCode.OK)
+			{
+				string html_str = await response.Content.ReadAsStringAsync();
+				if (Get_Chanel_And_Fre_From_Html(html_str, out int chanel_out, out double fre_out))
+				{
+					ch_fre.Avaliable = true;
+					ch_fre.Chanel = chanel_out;
+					ch_fre.Fre = fre_out;
+				}
+			}
+			return ch_fre;
+		}
+
+		/// <summary>
+		/// 从 HTML 字符串中获取信道和频率
+		/// </summary>
+		/// <param name="html"></param>
+		/// <param name="chanel"></param>
+		/// <param name="fre"></param>
+		/// <returns></returns>
+		public static bool Get_Chanel_And_Fre_From_Html(string html, out int chanel, out double fre)
 		{
 			chanel = 0;
 			fre = 0;

@@ -1,10 +1,16 @@
 ﻿@page "/"
 
-<div class="display-box">
-	@foreach (string str in StringList)
-	{
-		<div>@str</div>
-	}
-</div>
-<button @onclick="OnClick">点击发送请求</button>
-<div>@DisplayText</div>
+<article>
+	<div class="display-box">
+		<span>信道：@_chanel_display，</span>
+		<span>频率：@_fre_display</span>
+	</div>
+	<div>
+		<button>上一个频率</button>
+		<button>下一个频率</button>
+	</div>
+	<div>
+		<button>将频率重置为57MHz</button>
+		<button @onclick="FlushData">重新获取设备信息</button>
+	</div>
+</article>

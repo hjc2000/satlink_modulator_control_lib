@@ -1,21 +1,17 @@
 ﻿using ModulatorLib;
-using System.Net;
 
 namespace ST7000.Pages
 {
 	public partial class Index
 	{
-		double _fre_display = 0;
-		int _chanel_display = 0;
-		//private string _sys_info_url = "http://localhost:8051/SATLINK_Modulator_files/SystemInfo.html";
+		private ST7000Operator _st7000_operator = new ST7000Operator("localhost:8051");
+		private double _fre_display = 0;
+		private int _chanel_display = 0;
 
 		#region 生命周期函数
-		protected override async Task OnAfterRenderAsync(bool firstRender)
+		protected override async Task OnInitializedAsync()
 		{
-			if (firstRender)
-			{
-				await FlushData();
-			}
+			await FlushData();
 		}
 		#endregion
 
@@ -26,27 +22,17 @@ namespace ST7000.Pages
 		/// <returns></returns>
 		public async Task FlushData()
 		{
-			(bool avaliable, int chanel, int frequency) = await ST7000Lib.Get_Chanel_And_Fre_From_ST7000();
+			(bool avaliable, int chanel, int frequency) = await _st7000_operator.GetCurrentChannelAsync();
 
 			if (avaliable)
 			{
 				_chanel_display = chanel;
 				_fre_display = frequency;
 			}
-			StateHasChanged();
 		}
 		#endregion
 
 		#region 事件处理函数
-		private async Task SetToLastFre()
-		{
-
-		}
-
-		async Task SetToNextFre()
-		{
-
-		}
 
 		#endregion
 	}

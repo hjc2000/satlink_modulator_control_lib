@@ -7,14 +7,19 @@
 	public interface IModulatorOperator
 	{
 		/// <summary>
-		/// 预置的信道数据库，key为信道号，value为频率
+		/// 预置的信道数据库
 		/// </summary>
-		public Dictionary<int, int> ChannelDictionary { get; set; }
+		public int[] ChannelList { get; set; }
+
+		/// <summary>
+		/// name=channel的select标签的option子标签中的内容
+		/// </summary>
+		public string[] Channel_OptionTagList { get; set; }
 
 		/// <summary>
 		/// 调制器的IP地址
 		/// </summary>
-		public string IPAddress { get; set; }
+		public string IPAddressAndPort { get; set; }
 
 		/// <summary>
 		///		设置信道		<br/>
@@ -39,5 +44,10 @@
 		///		success=true时表示获取成功，此时channel的值有效
 		/// </returns>
 		public Task<(bool success, int channel, int frequency)> GetCurrentChannelAsync();
+
+		public Task<(bool success, int channel, int frequency)> GoToNextChannelAsync();
+		public Task<(bool success, int channel, int frequency)> GoBackToLastChannelAsync();
+		public Task<(bool success, int channel, int frequency)> GoToFirstChannelAsync();
+		public Task<(bool success, int channel, int frequency)> GoToLastChannelAsync();
 	}
 }

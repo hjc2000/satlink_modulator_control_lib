@@ -1,26 +1,11 @@
 ﻿namespace ModulatorLib
 {
 	/// <summary>
-	/// 调制器操作者<br></br>
+	/// 调制器操作接口		<br></br>
 	/// 所有不同的调制器的操作类都要继承该接口
 	/// </summary>
 	public interface IModulatorOperator
 	{
-		/// <summary>
-		/// 预置的信道数据库
-		/// </summary>
-		public int[] ChannelList { get; set; }
-
-		/// <summary>
-		/// name=channel的select标签的option子标签中的内容
-		/// </summary>
-		public string[] Channel_OptionTagList { get; set; }
-
-		/// <summary>
-		/// 调制器的IP地址
-		/// </summary>
-		public string IPAddressAndPort { get; set; }
-
 		/// <summary>
 		///		设置信道		<br/>
 		///		RF线使用频分复用来得到几个信道。通过设置信道号，将调制器当前频率设置为
@@ -34,7 +19,7 @@
 		///		channel: 信道号
 		///		frequency: 频率
 		/// </returns>
-		public Task<(bool success, int channel, int frequency)> SetCurrentChannelAsync(int channel);
+		public Task<(bool success, int channel, int frequency)> SetChannelAsync(int channel);
 
 		/// <summary>
 		///		获取当前的信道
@@ -46,8 +31,15 @@
 		public Task<(bool success, int channel, int frequency)> GetCurrentChannelAsync();
 
 		public Task<(bool success, int channel, int frequency)> GoToNextChannelAsync();
-		public Task<(bool success, int channel, int frequency)> GoBackToLastChannelAsync();
-		public Task<(bool success, int channel, int frequency)> GoToFirstChannelAsync();
-		public Task<(bool success, int channel, int frequency)> GoToLastChannelAsync();
+		public Task<(bool success, int channel, int frequency)> GoToPreviousChannelAsync();
+		public Task<(bool success, int channel, int frequency)> GoToTheFirstChannelAsync();
+		public Task<(bool success, int channel, int frequency)> GoToTheLastChannelAsync();
+		public Task<(bool success, int level)> SetLevelAsync();
+	}
+
+	public interface IOptionsDatabase
+	{
+		public string[] ChannelList { get; set; }
+		public string[] LevelList { get; set; }
 	}
 }

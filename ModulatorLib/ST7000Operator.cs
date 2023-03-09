@@ -1,34 +1,9 @@
-﻿using HtmlAgilityPack;
-
-namespace ModulatorLib
+﻿namespace ModulatorLib
 {
-	/// <summary>
-	/// ST7000内置数据库
-	/// </summary>
-	public class ST7000Operator : IModulatorOperator
+	public class ST7000OptionsDatabase : IOptionsDatabase
 	{
-		public ST7000Operator() { }
-		public ST7000Operator(string ip_address_and_port)
-		{
-			IPAddressAndPort = ip_address_and_port;
-		}
-
-		// 因为57的信道号是2，所以在数组前面插入两个0，使索引号与信道号一样
-		public int[] ChannelList { get; set; } = new int[]
-			{
-				0,0,57,63,69,79,85,177,183,189,195,201,207,213,123,129,135,141,147,153,159,
-				165,171,219,225,231,237,243,249,255,261,267,273,279,285,291,297,303,309,315,321,
-				327,333,339,345,351,357,363,369,375,381,387,393,399,405,411,417,423,429,435,441,
-				447,453,459,465,471,477,483,489,495,501,507,513,519,525,531,537,543,549,555,561,
-				567,573,579,585,591,597,603,609,615,621,627,633,639,645,93,99,105,111,117,651,
-				657,663,669,675,681,687,693,699,705,711,717,723,729,735,741,747,753,759,765,771,
-				777,783,789,795,801,807,813,819,825,831,837,843,849,855,861,867,873,879,885,891,
-				897,903,909,915,921,927,933,939,945,951,957,963,969,975,981,987,993,999,
-			};
-		public string[] Channel_OptionTagList { get; set; } = new string[]
-		{
-			string.Empty,
-			string.Empty,
+		public string[] ChannelList { get; set; } = new string[]
+	   {
 			"2 ( 57.0 MHz)",
 			"3 ( 63.0 MHz)",
 			"4 ( 69.0 MHz)",
@@ -186,14 +161,173 @@ namespace ModulatorLib
 			"156 (987.0 MHz)",
 			"157 (993.0 MHz)",
 			"158 (999.0 MHz)",
-		};
+	   };
+		public string[] LevelList { get; set; } = new string[]
+	   {
+			"100 dBuV",
+			"99 dBuV",
+			"98 dBuV",
+			"97 dBuV",
+			"96 dBuV",
+			"95 dBuV",
+			"94 dBuV",
+			"93 dBuV",
+			"92 dBuV",
+			"91 dBuV",
+			"90 dBuV",
+			"89 dBuV",
+			"88 dBuV",
+			"87 dBuV",
+			"86 dBuV",
+			"85 dBuV",
+			"84 dBuV",
+			"83 dBuV",
+			"82 dBuV",
+			"81 dBuV",
+			"80 dBuV",
+			"79 dBuV",
+			"78 dBuV",
+			"77 dBuV",
+			"76 dBuV",
+			"75 dBuV",
+			"74 dBuV",
+			"73 dBuV",
+			"72 dBuV",
+			"71 dBuV",
+			"70 dBuV",
+			"69 dBuV",
+	   };
+
+		private int _channel_index = 0;
+
+		int _level_index = 0;
+
+		/// <summary>
+		/// 将实际的信道号与本类的数据结构进行同步
+		/// </summary>
+		/// <param name="channel"></param>
+		/// <exception cref="Exception"></exception>
+		public void SyncChannel(string channel)
+		{
+			try
+			{
+				(_, int ch, _) = channel.ParseChannel();
+				_channel_index = ch;
+			}
+			catch
+			{
+				throw new Exception("信道字符串非法");
+			}
+
+			if (_channel_index < 0 || _channel_index >= ChannelList.Length)
+			{
+				throw new Exception("数据库中没有此信道编号");
+			}
+		}
+
+		/// <summary>
+		/// 同步强度值
+		/// </summary>
+		/// <param name="level"></param>
+		/// <exception cref="Exception">数据库中没有此强度值</exception>
+		public void SyncLevel(string level)
+		{
+			for (_level_index = 0; _level_index < LevelList.Length; _level_index++)
+			{
+				if (LevelList[_level_index] == level)
+				{
+					return;
+				}
+			}
+			throw new Exception("数据库中找不到此level值");
+		}
+
+		public string GetFirstLevel()
+		{
+			_level_index = 0;
+			return LevelList[0];
+		}
+
+		public string GetLastLevel()
+		{
+			_level_index = LevelList.Length - 1;
+			return LevelList[^1];
+		}
+
+		public string GetNextLevel()
+		{
+			_level_index++;
+			if (_level_index >= LevelList.Length)
+			{
+				_level_index = 0;
+			}
+			return LevelList[_level_index];
+		}
+
+		public string GetPreviousLevel()
+		{
+			_level_index--;
+			if (_level_index < 0)
+			{
+				_level_index = LevelList.Length - 1;
+			}
+			return LevelList[_level_index];
+		}
+
+		public string GetFirstChannel()
+		{
+			_channel_index = 0;
+			return ChannelList[0];
+		}
+
+		public string GetLastChannel()
+		{
+			_channel_index = ChannelList.Length - 1;
+			return ChannelList[^1];
+		}
+
+		public string GetNextChannel()
+		{
+			_channel_index++;
+			if (_channel_index >= ChannelList.Length)
+			{
+				_channel_index = 0;
+			}
+			return ChannelList[_channel_index];
+		}
+
+		public string GetPreviousChannel()
+		{
+			_channel_index--;
+			if (_channel_index < 0)
+			{
+				_channel_index = ChannelList.Length - 1;
+			}
+			return ChannelList[_channel_index];
+		}
+	}
+
+	/// <summary>
+	/// ST7000内置数据库
+	/// </summary>
+	public class ST7000Operator : IModulatorOperator, ICommunicate
+	{
+		#region 构造函数
+		public ST7000Operator() { }
+		public ST7000Operator(string ip_address_and_port)
+		{
+			IPAddressAndPort = ip_address_and_port;
+		}
+		#endregion
+
 		public string IPAddressAndPort { get; set; } = "192.168.1.15:80";
+		public HttpClient Http_Client { get; set; } = new HttpClient();
+		public ST7000OptionsDatabase Database { get; set; } = new ST7000OptionsDatabase();
 
 		#region 实现的接口函数
-		public async Task<(bool success, int channel, int frequency)> SetCurrentChannelAsync(int channel)
+		public async Task<(bool success, int channel, int frequency)> SetChannelAsync(int channel)
 		{
-			// country=ATSC_Cable&channel=2+%28+57.0+MHz%29&major=66&minor=1&constell=64QAM&level=100+dBuV&send=Save
-			throw new NotImplementedException();
+			return (false, 0, 0);
 		}
 
 		public async Task<(bool success, int channel, int frequency)> GetCurrentChannelAsync()
@@ -205,75 +339,45 @@ namespace ModulatorLib
 			if (response.IsSuccessStatusCode)
 			{
 				string html_str = await response.Content.ReadAsStringAsync();
-				(bool avaliable, int ch, int fre) = ParseChannelFromHtmlStr(html_str);
-				if (avaliable)
-				{
-					return (true, ch, fre);
-				}
+				return this.ParseChannelFromHtmlStr(html_str);
 			}
 			return (false, 0, 0);
 		}
 
 		public async Task<(bool success, int channel, int frequency)> GoToNextChannelAsync()
 		{
-			throw new NotImplementedException();
+			string post_str = $"country=ATSC_Cable&channel={Database.GetNextChannel()}&major=66&minor=1&constell=64QAM&level=100+dBuV&send=Save";
+			return await this.SendChannelSetupCommand(post_str);
 		}
 
-		public async Task<(bool success, int channel, int frequency)> GoBackToLastChannelAsync()
+		public async Task<(bool success, int channel, int frequency)> GoToPreviousChannelAsync()
+		{
+			string post_str = $"country=ATSC_Cable&channel={Database.GetPreviousChannel()}&major=66&minor=1&constell=64QAM&level=100+dBuV&send=Save";
+			return await this.SendChannelSetupCommand(post_str);
+		}
+
+		public async Task<(bool success, int channel, int frequency)> GoToTheFirstChannelAsync()
+		{
+			string post_str = $"country=ATSC_Cable&channel={Database.GetFirstChannel()}&major=66&minor=1&constell=64QAM&level=100+dBuV&send=Save";
+			return await this.SendChannelSetupCommand(post_str);
+		}
+
+		public async Task<(bool success, int channel, int frequency)> GoToTheLastChannelAsync()
+		{
+			string post_str = $"country=ATSC_Cable&channel={Database.GetLastChannel()}&major=66&minor=1&constell=64QAM&level=100+dBuV&send=Save";
+			return await this.SendChannelSetupCommand(post_str);
+		}
+
+		public Task<(bool success, string current_level)> SetLevel(string level_list_item)
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task<(bool success, int channel, int frequency)> GoToFirstChannelAsync()
+		public Task<(bool success, int level)> SetLevelAsync()
 		{
 			throw new NotImplementedException();
 		}
 
-		public async Task<(bool success, int channel, int frequency)> GoToLastChannelAsync()
-		{
-			throw new NotImplementedException();
-		}
 		#endregion
-
-		#region 私有函数
-		private (bool avaliable, int channel, int frequency) ParseChannelFromHtmlStr(string html_str)
-		{
-			// 加载 html 字符串
-			HtmlDocument doc = new HtmlDocument();
-			doc.LoadHtml(html_str);
-			// 选出 select 标签
-			HtmlNodeCollection select_nodes = doc.DocumentNode.SelectNodes("//select");
-			// 遍历每一个 select 标签节点
-			foreach (HtmlNode select_node in select_nodes)
-			{
-				// 如果 name 属性存在且为 channel
-				if (select_node?.Attributes["name"]?.Value == "channel")
-				{
-					// 获取 select 标签的子标签 option 标签
-					HtmlNodeCollection option_nodes = select_node.ChildNodes;
-					// 遍历每一个 option 标签
-					foreach (HtmlNode node_option in option_nodes)
-					{
-						// 如果标签存在 selected 属性
-						if (!(node_option.Attributes["selected"] == null))
-						{
-							string inner_text = node_option.InnerText;
-							string[] strs = inner_text.Split(new char[] { ' ', '（', '(' },
-								StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-							try
-							{
-								int re_chanel = int.Parse(strs[0]);
-								int re_frequency = (int)double.Parse(strs[1]);
-								return (true, re_chanel, re_frequency);
-							}
-							catch { }
-						}
-					}
-				}
-			}
-			return (false, 0, 0);
-		}
-		#endregion
-
 	}
 }

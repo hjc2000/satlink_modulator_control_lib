@@ -368,12 +368,7 @@
 			return await this.SendChannelSetupCommand(post_str);
 		}
 
-		public Task<(bool success, string current_level)> SetLevel(string level_list_item)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<(bool success, int level)> SetLevelAsync()
+		public Task<(bool success, int level)> SetLevelAsync(string level_str)
 		{
 			throw new NotImplementedException();
 		}

@@ -34,7 +34,7 @@
 		public Task<(bool success, int channel, int frequency)> GoToPreviousChannelAsync();
 		public Task<(bool success, int channel, int frequency)> GoToTheFirstChannelAsync();
 		public Task<(bool success, int channel, int frequency)> GoToTheLastChannelAsync();
-		public Task<(bool success, int level)> SetLevelAsync();
+		public Task<(bool success, int level)> SetLevelAsync(string level_str);
 	}
 
 	public interface IOptionsDatabase

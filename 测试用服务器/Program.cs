@@ -5,7 +5,7 @@ using System.Text;
 
 #region 设置服务器根路径
 //string _webRootPath = @"D:\my_files\workspace\我的网站\ESP32配网\wwwroot";
-string _webRootPath = @"C:\Users\huang\workspace\前端\ST7000";
+string _webRootPath = @"C:\Users\huang\workspace\前端\Plus2";
 #endregion
 
 #region 创建应用
@@ -69,6 +69,7 @@ app.Use(async (context, next) =>
 	{
 		context.Request.Path = new PathString("/");
 	}
+
 	await next();
 });
 

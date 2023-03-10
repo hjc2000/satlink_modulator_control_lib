@@ -8,7 +8,7 @@ namespace ModulatorLib
 	/// <summary>
 	/// 扩展HtmlAgilityPack库
 	/// </summary>
-	public static class Ex_Html
+	public static class Ex_HtmlAgilityPack
 	{
 		public static HtmlNode? SelectNodeWithTheAttributeValueFromDocument(this HtmlDocument me, string node_name, string attribute_name, string attribute_value)
 		{

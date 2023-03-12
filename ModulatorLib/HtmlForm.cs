@@ -31,7 +31,7 @@ namespace ModulatorLib
 		/// 解析html字符串，用来填充此类中储存的表单项的值
 		/// </summary>
 		/// <param name="html_str"></param>
-		public void ParseValueFromHtmlString(string html_str)
+		public void ParseHtml(string html)
 		{
 
 		}

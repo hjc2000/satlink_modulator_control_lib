@@ -1,4 +1,5 @@
-﻿using ModulatorLib;
+﻿using HtmlAgilityPack;
+using ModulatorLib;
 
 HtmlForm form = new HtmlForm()
 {
@@ -140,7 +141,24 @@ string requestUrl = @"http://localhost:8051/Modulator_files/MainInfo.html";
 HttpResponseMessage responseMessage = await client.GetAsync(requestUrl);
 if (responseMessage.IsSuccessStatusCode)
 {
-	var content = responseMessage.Content;
+	HttpContent content = responseMessage.Content;
 	string reStr = await content.ReadAsStringAsync();
-	Console.WriteLine(reStr);
+	ParseHtml(reStr);
+}
+
+void ParseHtml(string html_str)
+{
+	HtmlDocument document = new HtmlDocument();
+	document.LoadHtml(html_str);
+	var formItems = document.DocumentNode.SelectNodes("//form//@name");
+	foreach (HtmlNode node in formItems)
+	{
+		Console.WriteLine(node.OuterHtml);
+		WriteSeparator();
+	}
+}
+
+static void WriteSeparator()
+{
+	Console.WriteLine("---------------------------------");
 }

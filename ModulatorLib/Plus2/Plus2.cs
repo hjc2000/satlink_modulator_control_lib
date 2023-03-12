@@ -1,11 +1,11 @@
 ﻿namespace ModulatorLib.Plus2
 {
-	public class Plus2_DTMB_ChannelSetup
+	public class Plus2DTMB
 	{
 		/// <summary>
 		/// ChannelSetup的表单
 		/// </summary>
-		private HtmlForm _form = new HtmlForm()
+		public HtmlForm _channelSetupForm = new HtmlForm()
 		{
 			new SelectTag("country")
 			{

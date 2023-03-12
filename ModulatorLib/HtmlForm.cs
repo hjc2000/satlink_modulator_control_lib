@@ -5,48 +5,10 @@ namespace ModulatorLib
 	/// <summary>
 	/// 模拟HTML的表单
 	/// </summary>
-	public class HtmlForm : IEnumerable<FormItem>
+	public class HtmlForm : IEnumerable<KeyValuePair<string, FormItem>>
 	{
+		#region 网络相关
 		public string Action { get; set; } = @"http://192.168.1.15/ChannelSetup.htm";
-
-		/// <summary>
-		/// 通过标签的name属性来找到指定的项。表单中的标签的name属性不能重复，所以可以用来
-		/// 唯一标识一个标签
-		/// </summary>
-		/// <param name="name">表单项的name属性的值</param>
-		/// <returns>表单项的引用</returns>
-		public FormItem? FindFormItemWithName(string name)
-		{
-			return Items.Find((item) =>
-			{
-				if (item.Name == name)
-				{
-					return true;
-				}
-
-				return false;
-			});
-		}
-
-		/// <summary>
-		/// 存放表单项的列表
-		/// </summary>
-		public List<FormItem> Items = new List<FormItem>();
-
-		public IEnumerator<FormItem> GetEnumerator()
-		{
-			return Items.GetEnumerator();
-		}
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return Items.GetEnumerator();
-		}
-
-		public void Add(FormItem item)
-		{
-			Items.Add(item);
-		}
-
 		/// <summary>
 		/// 获得表单的http post请求体字符串
 		/// </summary>
@@ -54,14 +16,48 @@ namespace ModulatorLib
 		public override string ToString()
 		{
 			string re_str = string.Empty;
-			foreach (FormItem item in Items)
+			foreach (KeyValuePair<string, FormItem> item in Items)
 			{
-				re_str += item.ToString() + "&";
+				re_str += item.Value.ToString() + "&";
 			}
 
 			re_str = re_str.Substring(0, re_str.Length - 1);
 			return re_str;
 		}
+		#endregion
+
+		#region 让用户操作容器
+		/// <summary>
+		/// 解析html字符串，用来填充此类中储存的表单项的值
+		/// </summary>
+		/// <param name="html_str"></param>
+		public void ParseValueFromHtmlString(string html_str)
+		{
+
+		}
+		#endregion
+
+		#region 将此类作为容器的实现
+		/// <summary>
+		/// 存放表单项的字典
+		/// </summary>
+		public Dictionary<string, FormItem> Items = new();
+
+		public void Add(FormItem item)
+		{
+			Items.Add(item.Name, item);
+		}
+
+		IEnumerator<KeyValuePair<string, FormItem>> IEnumerable<KeyValuePair<string, FormItem>>.GetEnumerator()
+		{
+			return Items.GetEnumerator();
+		}
+
+		public IEnumerator GetEnumerator()
+		{
+			return Items.GetEnumerator();
+		}
+		#endregion
 	}
 
 	/// <summary>
@@ -69,6 +65,7 @@ namespace ModulatorLib
 	/// </summary>
 	public class FormItem
 	{
+		#region 构造函数
 		public FormItem() { }
 		public FormItem(string name)
 		{
@@ -79,6 +76,8 @@ namespace ModulatorLib
 			Name = name;
 			Value = value;
 		}
+		#endregion
+
 		/// <summary>
 		/// 表单项的name属性
 		/// </summary>
@@ -120,9 +119,11 @@ namespace ModulatorLib
 	/// </summary>
 	public class SelectTag : FormItem, IEnumerable<string>
 	{
+		#region 构造函数
 		public SelectTag() { }
 		public SelectTag(string name) : base(name) { }
 		public SelectTag(string name, string value) : base(name, value) { }
+		#endregion
 
 		private string? _value = null;
 		public override string Value
@@ -150,6 +151,7 @@ namespace ModulatorLib
 			set => _value = value;
 		}
 
+		#region 将此类作为容器的实现
 		/// <summary>
 		/// select标签的可选项
 		/// </summary>
@@ -159,6 +161,7 @@ namespace ModulatorLib
 		{
 			return Options.GetEnumerator();
 		}
+
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return Options.GetEnumerator();
@@ -168,5 +171,6 @@ namespace ModulatorLib
 		{
 			Options.Add(name);
 		}
+		#endregion
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using ModulatorLib;
 
-HtmlForm _form = new HtmlForm()
+HtmlForm form = new HtmlForm()
 {
 	new SelectTag("country")
 	{
@@ -133,13 +133,14 @@ HtmlForm _form = new HtmlForm()
 		"Cancel",
 	},
 };
-Console.WriteLine(_form.ToString());
-FormItem? item = _form.FindFormItemWithName("country");
-if (item != null)
+
+HttpClient client = new HttpClient();
+string requestUrl = @"http://localhost:8051/Modulator_files/MainInfo.html";
+//string requestUrl = @"http://www.baidu.com/";
+HttpResponseMessage responseMessage = await client.GetAsync(requestUrl);
+if (responseMessage.IsSuccessStatusCode)
 {
-	Console.WriteLine("找到的值：" + item.Value);
-}
-else
-{
-	Console.WriteLine("没找到");
+	var content = responseMessage.Content;
+	string reStr = await content.ReadAsStringAsync();
+	Console.WriteLine(reStr);
 }

@@ -23,7 +23,11 @@ namespace ModulatorLib
 				reValue += item.Value.ToString() + "&";
 			}
 			// 去除结尾的&符
-			reValue = reValue.Substring(0, reValue.Length - 1);
+			if (reValue.EndsWith("&"))
+			{
+				reValue = reValue.Substring(0, reValue.Length - 1);
+			}
+
 			return reValue;
 		}
 		#endregion
@@ -101,6 +105,8 @@ namespace ModulatorLib
 		}
 		#endregion
 
+		public virtual string Type => "FormItem";
+
 		/// <summary>
 		/// 表单项的name属性
 		/// </summary>
@@ -174,6 +180,8 @@ namespace ModulatorLib
 		public SelectTag(string name) : base(name) { }
 		public SelectTag(string name, string value) : base(name, value) { }
 		#endregion
+
+		public override string Type => "SelectTag";
 
 		private string? _value = null;
 		public override string Value

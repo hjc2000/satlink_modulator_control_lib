@@ -1,0 +1,39 @@
+﻿@page "/"
+@using ModulatorLib;
+
+<body>
+	@foreach (KeyValuePair<string, FormItem> pair in _form)
+	{
+		var key = pair.Key;
+		var selectTag = (SelectTag)(pair.Value);
+		var options = selectTag.Options;
+
+		@key
+		<div>
+			<select>
+				@foreach (string option in options)
+				{
+					<option>@option</option>
+				}
+			</select>
+		</div>
+	}
+</body>
+
+@code
+{
+	protected override async Task OnInitializedAsync()
+	{
+		HttpResponseMessage responseMessage = await _client.GetAsync(_requestUrl);
+		if (responseMessage.IsSuccessStatusCode)
+		{
+			HttpContent content = responseMessage.Content;
+			string response = await content.ReadAsStringAsync();
+			_form.ParseHtml(response);
+		}
+	}
+
+	HtmlForm _form = new();
+	HttpClient _client = new();
+	string _requestUrl = @"http://localhost:8051/Modulator_files/MainInfo.html";
+}

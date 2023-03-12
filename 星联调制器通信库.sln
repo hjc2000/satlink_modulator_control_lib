@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModulatorLib", "ModulatorLib\ModulatorLib.csproj", "{C845BB72-622A-46E3-AF35-452A994D2F08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plus2ControlPanel", "Plus2ControlPanel\Plus2ControlPanel.csproj", "{DDD9A12E-ED39-4902-B2C9-975335FEEA80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,12 @@ Global
 		{C845BB72-622A-46E3-AF35-452A994D2F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C845BB72-622A-46E3-AF35-452A994D2F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C845BB72-622A-46E3-AF35-452A994D2F08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDD9A12E-ED39-4902-B2C9-975335FEEA80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDD9A12E-ED39-4902-B2C9-975335FEEA80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDD9A12E-ED39-4902-B2C9-975335FEEA80}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DDD9A12E-ED39-4902-B2C9-975335FEEA80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDD9A12E-ED39-4902-B2C9-975335FEEA80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDD9A12E-ED39-4902-B2C9-975335FEEA80}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

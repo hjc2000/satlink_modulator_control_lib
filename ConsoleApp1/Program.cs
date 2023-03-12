@@ -11,12 +11,18 @@ if (responseMessage.IsSuccessStatusCode)
 	HtmlForm htmlForm = new HtmlForm();
 	htmlForm.ParseHtml(response);
 	SelectTag selectTag = (SelectTag)htmlForm["channel"];
-	List<string> options = selectTag.Options;
-	foreach (string option in options)
+	foreach (string option in selectTag.Options)
 	{
 		Console.WriteLine(option);
 	}
 
-	Console.WriteLine("----------------------------------------");
+	Separator();
 	Console.WriteLine(htmlForm.ToString());
+	Separator();
+	Console.WriteLine(selectTag.Type);
+}
+
+void Separator()
+{
+	Console.WriteLine("----------------------------------------");
 }

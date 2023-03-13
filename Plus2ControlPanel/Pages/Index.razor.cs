@@ -8,8 +8,8 @@ namespace Plus2ControlPanel.Pages
 		private HtmlForm _form = new();
 		private HttpClient _client = new();
 
-		//string _requestUrl = @"http://localhost:8051/Modulator_files/MainInfo.html";
-		private string _requestUrl = @"http://192.168.1.15/ChannelSetup.htm";
+		string _requestUrl = @"http://localhost:8051/Modulator_files/MainInfo.html";
+		//private string _requestUrl = @"http://192.168.1.15/ChannelSetup.htm";
 		private SelectTag? _channelSelectTag = null;
 		private int _channelIndex = 0;
 

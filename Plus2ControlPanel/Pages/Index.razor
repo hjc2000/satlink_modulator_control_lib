@@ -1,42 +1,46 @@
 ﻿@page "/"
 @using ModulatorLib;
 
-<body>
+<article>
 	<div style="margin-bottom:1em;">
-		<input style="width:100%" @bind="_requestUrl" />
+		<input @bind="_requestUrl" />
 	</div>
-	@foreach (KeyValuePair<string, FormItem> pair in _form)
-	{
-		var key = pair.Key;
-		var formItem = pair.Value;
 
-		<div>
-			<span>@key:</span>
-			@switch (formItem.Type)
-			{
-			case "FormItem":
-				{
-					<input @bind="formItem.Value" />
-					break;
-				}
-			case "SelectTag":
-				{
-					var selectItem = (SelectTag)formItem;
-					var options = selectItem.Options;
-					<select @bind="selectItem.Value">
-						@foreach (string option in options)
+	<table>
+		@foreach (KeyValuePair<string, FormItem> pair in _form)
+		{
+			FormItem formItem = pair.Value;
+			<tr>
+				<td>@pair.Value.Name</td>
+				<td>
+					@switch (formItem.Type)
+					{
+					case "FormItem":
 						{
-							<option>@option</option>
+							<input @bind="formItem.Value" />
+							break;
 						}
-					</select>
-					break;
-				}
-			}
-		</div>
-	}
+					case "SelectTag":
+						{
+							SelectTag selectItem = (SelectTag)formItem;
+							List<string> options = selectItem.Options;
+							<select @bind="selectItem.Value">
+								@foreach (string option in options)
+								{
+									<option>@option</option>
+								}
+							</select>
+							break;
+						}
+					}
+				</td>
+			</tr>
+		}
+	</table>
+
 	<div>
 		<button @onclick="OnSubmitButtonClick">提交按钮</button>
 		<button @onclick="OnNextFreq">下一个频率</button>
 		<button @onclick="OnFlush">刷新</button>
 	</div>
-</body>
+</article>

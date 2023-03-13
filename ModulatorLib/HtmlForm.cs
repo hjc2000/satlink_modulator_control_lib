@@ -39,17 +39,33 @@ namespace ModulatorLib
 		/// <param name="html"></param>
 		public void ParseHtml(string html)
 		{
+			Items.Clear();
 			HtmlDocument document = new HtmlDocument();
 			document.LoadHtml(html);
 			// 选择form标签中具有name属性的标签
 			HtmlNodeCollection formItems = document.DocumentNode.SelectNodes("//form//@name");
-			formItems.Remove(0);// 去除form标签本身。
-								// 遍历每个表单项节点，添加到容器中
+			// 去除form标签本身。
+			formItems.Remove(0);
+			// 遍历每个表单项节点，添加到容器中
 			foreach (HtmlNode? formItem in formItems)
 			{
-				SelectTag selectTag = new(formItem.Attributes["name"].Value);
-				selectTag.ParseHtml(formItem);
-				Add(selectTag);
+				switch (formItem.Name)
+				{
+				case "select":
+					{
+						SelectTag selectTag = new();
+						selectTag.ParseHtml(formItem);
+						Add(selectTag);
+						break;
+					}
+				default:
+					{
+						FormItem item = new FormItem();
+						item.ParseHtml(formItem);
+						Add(item);
+						break;
+					}
+				}
 			}
 		}
 		#endregion
@@ -115,7 +131,6 @@ namespace ModulatorLib
 			get => Attributes["name"];
 			set => Attributes["name"] = value;
 		}
-
 		/// <summary>
 		/// 表单项的value属性
 		/// </summary>
@@ -190,15 +205,12 @@ namespace ModulatorLib
 			{
 				if (_value == null)
 				{
-					try
+					if (Options.Count > 0)
 					{
 						_value = Options[0];
-						/*使用override关键字重写后，通过基类的引用访问Value属性时，访问到的
-						 是派生类的Value属性。但是，派生类中可以通过base.Value来访问基类的
-						Value属性，此行为不影响属性的多态。*/
 						base.Value = _value;
 					}
-					catch
+					else
 					{
 						_value = string.Empty;
 					}
